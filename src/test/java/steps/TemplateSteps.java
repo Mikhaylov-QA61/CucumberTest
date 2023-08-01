@@ -5,6 +5,7 @@ import data.DataHelper;
 import io.cucumber.java.ru.Когда;
 import io.cucumber.java.ru.Пусть;
 import io.cucumber.java.ru.Тогда;
+import org.junit.Assert;
 import page.DashboardPage;
 import page.LoginPage;
 import page.TransferPage;
@@ -28,12 +29,7 @@ public class TemplateSteps {
     @Когда("пользователь переводит {int} рублей с карты с номером {string} на свою {int} карту с главной страницы")
     public void makeTransfer(int amount, String numberCard, int indexCard) {
         int amountTransfer = amount;
-        DataHelper.InfoCard selectedCard= null;
-        if (indexCard == 1){
-            selectedCard = DataHelper.getFirstCard();
-        } else if (indexCard == 2) {
-            selectedCard = DataHelper.getSecondCard();
-            }
+        DataHelper.InfoCard selectedCard = dashboardPage.getCardNumber(indexCard);
         var transferPage = dashboardPage.selectCardToTransfer(selectedCard);
         var card = DataHelper.getCard(numberCard);
         transferPage.makeTransfer(String.valueOf(amountTransfer), card);
@@ -42,5 +38,6 @@ public class TemplateSteps {
     public void ActualBalance(int index, int balance) {
         int actualBalance = dashboardPage.getCardBalance(index);
         int expectedBalance = balance;
+        Assert.assertEquals(expectedBalance,actualBalance);
     }
 }
