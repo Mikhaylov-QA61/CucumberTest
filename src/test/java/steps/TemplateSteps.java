@@ -28,11 +28,10 @@ public class TemplateSteps {
     }
     @Когда("пользователь переводит {int} рублей с карты с номером {string} на свою {int} карту с главной страницы")
     public void makeTransfer(int amount, String numberCard, int indexCard) {
-        int amountTransfer = amount;
         DataHelper.InfoCard selectedCard = dashboardPage.getCardNumber(indexCard);
         var transferPage = dashboardPage.selectCardToTransfer(selectedCard);
         var card = DataHelper.getCard(numberCard);
-        transferPage.makeTransfer(String.valueOf(amountTransfer), card);
+        transferPage.makeTransfer(String.valueOf(amount), card);
     }
     @Тогда("баланс его {int} карты из списка на главной странице должен стать {int}")
     public void ActualBalance(int index, int balance) {
