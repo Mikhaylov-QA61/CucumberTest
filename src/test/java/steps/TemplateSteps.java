@@ -12,11 +12,10 @@ import page.TransferPage;
 import page.VerificationPage;
 
 public class TemplateSteps {
-    public static DataHelper dataHelper;
     private static LoginPage loginPage;
     private static DashboardPage dashboardPage;
     private static VerificationPage verificationPage;
-    public static TransferPage transferPage;
+    private static TransferPage transferPage;
 
     @Пусть("пользователь залогинен с именем {string} и паролем {string}")
     public void loginUser(String login, String password) {
@@ -28,8 +27,7 @@ public class TemplateSteps {
     }
     @Когда("пользователь переводит {int} рублей с карты с номером {string} на свою {int} карту с главной страницы")
     public void makeTransfer(int amount, String numberCard, int indexCard) {
-        DataHelper.InfoCard selectedCard = dashboardPage.getCardNumber(indexCard);
-        var transferPage = dashboardPage.selectCardToTransfer(selectedCard);
+        var transferPage = dashboardPage.selectedCardToTransfer(indexCard);
         var card = DataHelper.getCard(numberCard);
         transferPage.makeTransfer(String.valueOf(amount), card);
     }
