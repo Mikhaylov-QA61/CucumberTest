@@ -6,71 +6,55 @@ import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import lombok.Value;
 
+import java.util.Objects;
 import java.util.Random;
 
 import static io.restassured.RestAssured.given;
+
 public class DataHelper {
 
     static Random random = new Random();
-    private DataHelper(){
+
+    private DataHelper() {
     }
 
-    private static final RequestSpecification requestSpec = new RequestSpecBuilder()
-            .setBaseUri("http://localhost")
-            .setPort(9999)
-            .setAccept(ContentType.JSON)
-            .setContentType(ContentType.JSON)
-            .log(LogDetail.ALL)
-            .build();
-
-
-    static void sendRequest(RegisteredUser user) {
-        given()
-                .spec(requestSpec)
-                .body(user)
-                .when()
-                .post("/api/system/users")
-                .then()
-                .statusCode(200);
-    }
-
-    public static RegisteredUser getRegisteredUser(){
-        return new RegisteredUser("vasya","qwerty123");
-    }
-
-    public static VerificationCode getVerificationCode(){
+    public static VerificationCode getVerificationCode() {
         return new VerificationCode("12345");
     }
 
-    public static InfoCard getFirstCard(){
+    public static InfoCard getFirstCard() {
         InfoCard InfoCard = new InfoCard("5559 0000 0000 0001", "92df3f1c-a033-48e6-8390-206f6b1f56c0");
         return InfoCard;
     }
 
-    public static  InfoCard getSecondCard(){
+    public static InfoCard getSecondCard() {
         InfoCard InfoCard = new InfoCard("5559 0000 0000 0002", "0f3f5c2a-249e-4c3d-8287-09f7a039391d");
         return InfoCard;
     }
 
-    public static int generateValidAmount(int balance){
-        int validBalance = random.nextInt(balance) +1;
-        return validBalance;
-    }
-    public static int generateInvalidAmount(int balance){
-        int invalidBalance = balance + (10_000 + random.nextInt(66_666));
-        return invalidBalance;
-    }
+    public static InfoCard getCard(String cardNumber) {
+        InfoCard InfoCard = null;
 
+        if (Objects.equals(cardNumber, "5559 0000 0000 0001")) {
+            InfoCard = new InfoCard("5559 0000 0000 0001", "92df3f1c-a033-48e6-8390-206f6b1f56c0");
+        }
+        if (Objects.equals(cardNumber, "5559 0000 0000 0002")) {
+            InfoCard = new InfoCard("5559 0000 0000 0002", "0f3f5c2a-249e-4c3d-8287-09f7a039391d");
+        }
+        return InfoCard;
+    }
 
     @Value
-    public static class VerificationCode{
+    public static class VerificationCode {
         String code;
     }
+
     @Value
-    public static class InfoCard{
+    public static class InfoCard {
         String numberCard;
         String testId;
     }
+
     @Value
     public static class RegisteredUser {
         String login;

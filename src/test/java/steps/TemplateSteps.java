@@ -22,15 +22,20 @@ public class TemplateSteps {
         loginPage = Selenide.open("http://localhost:9999", LoginPage.class);
         var user = new DataHelper.RegisteredUser(login, password);
         verificationPage = loginPage.validLogin(user);
-        var verificationCode = new DataHelper.VerificationCode("12345");
+        var verificationCode = DataHelper.getVerificationCode();
         dashboardPage = verificationPage.validVerify(verificationCode);
     }
     @Когда("пользователь переводит {int} рублей с карты с номером {string} на свою {int} карту с главной страницы")
     public void makeTransfer(int amount, String numberCard, int indexCard) {
         int amountTransfer = amount;
-        var firstCard = DataHelper.getFirstCard();
-        var transferPage = dashboardPage.selectCardTotransfer(firstCard);
-        var card = new DataHelper.InfoCard(numberCard, "0f3f5c2a-249e-4c3d-8287-09f7a039391d");
+        DataHelper.InfoCard selectedCard= null;
+        if (indexCard == 1){
+            selectedCard = DataHelper.getFirstCard();
+        } else if (indexCard == 2) {
+            selectedCard = DataHelper.getSecondCard();
+            }
+        var transferPage = dashboardPage.selectCardToTransfer(selectedCard);
+        var card = DataHelper.getCard(numberCard);
         transferPage.makeTransfer(String.valueOf(amountTransfer), card);
     }
     @Тогда("баланс его {int} карты из списка на главной странице должен стать {int}")

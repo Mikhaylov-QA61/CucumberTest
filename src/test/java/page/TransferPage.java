@@ -28,12 +28,4 @@ public class TransferPage {
         from.setValue(infoCard.getNumberCard());
         transferButton.click();
     }
-    public DashboardPage validTransfer(String transferredAmount,DataHelper.InfoCard infoCard){
-        makeTransfer(transferredAmount,infoCard);
-        return new DashboardPage();
-    }
-
-    public void  findError(String expectedText){
-        errorMessage.shouldHave(exactText(expectedText), Duration.ofSeconds(15)).shouldBe(visible);
-    }
 }
